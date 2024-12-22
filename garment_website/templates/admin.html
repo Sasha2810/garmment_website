@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админка</title>
+    <link rel="stylesheet" href="../static/styles/styles.css">
+</head>
+<body>
+    <section class="admin_css">
+        <h2>Добавить новый товар</h2>
+        <form action="/QW1F23V4" method="POST" enctype="multipart/form-data" class="product-form">
+            <label for="name">Название товара</label>
+            <input type="text" id="name" name="name" class="form-input" required><br>
+            
+            <label for="description">Описание товара</label>
+            <textarea id="description" name="description" class="form-textarea" required></textarea><br>
+            
+            <label for="price">Цена</label>
+            <input type="number" id="price" name="price" class="form-input" required><br>
+            
+            <label for="image">Фото товара</label>
+            <input type="file" id="image" name="images" class="form-file" multiple accept="image/*">
+            
+            <button type="submit" class="submit-button">Добавить товар</button>
+        </form>
+
+        <h2>Список товаров</h2>
+        <div>
+            {% for product in products %}
+            <div class="products_admin">
+                <div class="prod1">
+                    <h2>Name: {{ product['name'] }}</h2>
+                    <p>Description: {{ product['description'] }}</p>
+                    <p>Price: {{ product['price'] }} р</p>
+                    {% if product['images'] %}
+                        <p>Images:</p>
+                        {% for img in product['images'] %}
+                            <img src="{{ url_for('static', filename='image/' ~ img) }}" alt="{{ img }}" style="width: 100px;">
+                        {% endfor %}
+                    {% endif %}
+                    <!-- Кнопка перемещения в архив -->
+                    <form action="{{ url_for('archive_product', product_id=loop.index0) }}" method="POST" style="display:inline;">
+                        <button type="submit">Переместить в архив</button>
+                    </form>
+                    <!-- Кнопка удаления из каталога -->
+                    <form action="{{ url_for('delete_from_catalog', product_id=loop.index0) }}" method="POST" style="display:inline;">
+                        <button type="submit">Удалить товар</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h2>Архив товаров</h2>
+        <div>
+            {% if archived_products %}
+                {% for product in archived_products %}
+                <div class="products_admin">
+                    <div class="prod1">
+                        <h2>Name: {{ product['name'] }}</h2>
+                        <p>Description: {{ product['description'] }}</p>
+                        <p>Price: {{ product['price'] }} р</p>
+                        {% if product['images'] %}
+                            <p>Images:</p>
+                            {% for img in product['images'] %}
+                                <img src="{{ url_for('static', filename='image/' ~ img) }}" alt="{{ img }}" style="width: 100px;">
+                            {% endfor %}
+                        {% endif %}
+                        <!-- Кнопка удаления из архива -->
+                        <form action="{{ url_for('delete_from_archive', product_id=loop.index0) }}" method="POST" style="display:inline;">
+                            <button type="submit">Удалить товар из архива</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Архив пуст.</p>
+            {% endif %}
+        </div>
+
+    </section>
+</body>
+</html>
