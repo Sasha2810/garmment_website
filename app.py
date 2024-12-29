@@ -4,8 +4,8 @@ import os
 
 app = Flask(__name__)
 
-secret_key = os.urandom(24)  
-app.secret_key = secret_key.hex()  
+# secret_key = os.urandom(24)  
+app.secret_key = 'aP9#fN4@8TgL!kE1$2ZxVpRqSdUoWmYq'
 
 app.config['UPLOAD_FOLDER'] = 'static/image'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
