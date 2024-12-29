@@ -111,38 +111,38 @@
 
     <section id="cart" class="section cart">
         <h3>Корзина</h3>
-        {% if cart %}
+        {% if session.cart %}
             <div>
-                {% set index = 0 %}  {# Initialize the index counter #}
-                {% for item in cart %}
+                {% set index = 0 %}  {# Инициализация счетчика индекса #}
+                {% for item in session.cart %}
                     <div class="products_admin">
                         <div class="prod1">
                             <h2>Товар: {{ item['name'] }}</h2>
-                            <p>Price: {{ item['price'] }} р</p>
+                            <p>Цена: {{ item['price'] }} р</p>
                             {% if item['images'] %}
                                 {% for img in item['images'] %}
                                     <img src="{{ url_for('static', filename='image/' ~ img) }}" alt="{{ img }}" style="width: 100px;">
                                 {% endfor %}
                             {% endif %}
-                            <!-- Remove from Cart Button -->
-                            <form action="{{ url_for('remove_from_cart', item_index=index) }}" method="POST" style="display:inline;">
+                            <form action="{{ url_for('remove_from_cart', product_id=item.id) }}" method="POST" style="display:inline;">
                                 <button type="submit" class="btn btn-danger remove-btn">Удалить</button>
                             </form>
+                            
                         </div>
                     </div>
-                    {% set index = index + 1 %}  {# Increment the index counter #}
+                    {% set index = index + 1 %}  {# Увеличиваем счетчик индекса #}
                 {% endfor %}
             </div>
-            <!-- Button to proceed to checkout -->
-            <form action="{{ url_for('checkout') }}" method="GET" style="margin-top: 20px;">
+            <!-- Кнопка для перехода к оплате -->
+            <form action="{{ url_for('checkout') }}" method="POST" style="margin-top: 20px;">
                 <button type="submit" class="btn">Перейти к оплате</button>
             </form>
         {% else %}
             <p>Ваша корзина пуста.</p>
         {% endif %}
         <a href="/">Вернуться к покупкам</a>
-    </section>
-    
+    </section>    
+
     
     <footer class="footer">
         <div class="container">
