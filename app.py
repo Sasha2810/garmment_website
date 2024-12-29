@@ -1,7 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_session import Session
 import uuid
 import os
+import redis
 
+app = Flask(__name__)
+
+# Настройка Flask-Session
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_USE_SIGNER'] = True
+app.config['SESSION_KEY_PREFIX'] = 'cart_session:'
+app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+Session(app)
 app = Flask(__name__)
 
 # secret_key = os.urandom(24)  
